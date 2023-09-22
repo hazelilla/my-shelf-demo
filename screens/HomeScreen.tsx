@@ -48,7 +48,7 @@ const HomeScreen = ({navigation}: ScreenProp) => {
   ];
 
   return (
-    <SafeAreaView style={{display: 'flex', flex: 1}}>
+    <SafeAreaView style={{display: 'flex', flex: 1, backgroundColor: 'beige'}}>
       {/* <ScrollView style={{backgroundColor: 'beige'}}> */}
       <View style={{flex: 1}}>
         <View style={styles.sectionContainer}>
@@ -77,6 +77,7 @@ const HomeScreen = ({navigation}: ScreenProp) => {
 
           {/* Book cards */}
           <FlatList
+            style={{}}
             data={books}
             keyExtractor={item => item.code}
             renderItem={({item}) => (
@@ -98,6 +99,7 @@ const HomeScreen = ({navigation}: ScreenProp) => {
 const styles = StyleSheet.create({
   sectionContainer: {
     alignItems: 'center',
+    flex:1
   },
   titleText: {
     fontSize: 45,
