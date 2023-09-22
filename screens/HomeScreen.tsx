@@ -11,8 +11,42 @@ import {
 import BookCard from '../components/BookCard';
 import { ScreenProp } from '../types';
  
+interface Book {
+  name: string;
+  author: string;
+  date: string;
+  code: string;
+}
 
 const HomeScreen = ({navigation}: ScreenProp) => {
+
+  const books: Book[] = [
+    {
+      name: "The Little Prince",
+      author: "Antoine de Saint-Exupery",
+      date: "01.09.1998",
+      code: "SJADH74637"
+    },
+    {
+      name: "Jane Eyre",
+      author: "Charlotte Bronte",
+      date: "30.11.1870",
+      code: "23LKOD87"
+    },
+    {
+      name: "The Da Vinci Code",
+      author: "Dan Brown",
+      date: "11.10.1999",
+      code: "A35GN"
+    },
+    {
+      name: "Pride and Prejudice",
+      author: "Jane Austen",
+      date: "23.02.1679",
+      code: "VNDQW7"
+    },
+  ];
+
   return (
     <SafeAreaView style={{display: 'flex', flex: 1}}>
       <ScrollView style={{backgroundColor: "beige"}} > 
@@ -36,10 +70,8 @@ const HomeScreen = ({navigation}: ScreenProp) => {
           </TouchableOpacity>
 
           {/* Book cards */}
-          <BookCard name={"The Little Prince"} author={"Antoine de Saint-Exupery"} date={"01.09.1998"} code={"SJADH74637"}/>
-          <BookCard name={"Jane Eyre"} author={"Charlotte Bronte"} date={"30.11.1870"} code={"23LKOD87"}/>
-          <BookCard name={"The Da Vinci Code"} author={"Dan Brown"} date={"11.10.1999"} code={"A35GN"}/>
-          <BookCard name={"Pride and Prejudice"} author={"Jane Austen"} date={"23.02.1679"} code={"VNDQW7"}/>
+          <BookCard books={books}/>
+          
             
         </View>
       </ScrollView>

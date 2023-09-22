@@ -1,16 +1,33 @@
 import React from "react";
 import { Text, View } from "react-native-ui-lib";
-import { StyleSheet } from "react-native";
+import { StyleSheet, FlatList } from "react-native";
 
-const BookCard = ({name, author, date, code} : {name: string, author: string, date: string, code: string}) => {
+interface Book {
+    name: string;
+    author: string;
+    date: string;
+    code: string;
+}
+
+interface BookCardProps {
+    books: Book[];
+}
+
+const BookCard: React.FC<BookCardProps> = ({books}) => {
     return(
         <View>
-            <View style={styles.book}>
-                <Text style={styles.bookText}>Name: {name}</Text>
-                <Text style={styles.bookText}>Author: {author}</Text>
-                <Text style={styles.bookText}>Date: {date}</Text>
-                <Text style={styles.bookText}>Code: {code}</Text>
-            </View>
+            <FlatList
+            data={books}
+            keyExtractor={(item) => item.code}
+            renderItem={({ item }) => (
+                <View style={styles.book}>
+                <Text style={styles.bookText}>Name: {item.name}</Text>
+                <Text style={styles.bookText}>Author: {item.author}</Text>
+                <Text style={styles.bookText}>Date: {item.date}</Text>
+                <Text style={styles.bookText}>Code: {item.code}</Text>
+                </View>
+            )}
+            />
 
             <View style={styles.shelf}/>
         </View>
