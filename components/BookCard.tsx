@@ -17,7 +17,7 @@ const BookCard = ({name, author, date, code} : {name: string, author: string, da
 }
 const styles = StyleSheet.create({
     book: {
-        width: 370,
+        width: "98%",
         backgroundColor: "white", 
         padding: 15,
         paddingHorizontal: 40,
