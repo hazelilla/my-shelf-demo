@@ -9,8 +9,10 @@ import {
   Image,
   FlatList,
 } from 'react-native';
+import { useSelector } from 'react-redux';
 import BookCard from '../components/BookCard';
-import {ScreenProp} from '../types';
+import { ScreenProp } from '../types';
+import { getBooks } from '../features/BookSlice';
 
 interface Book {
   name: string;
@@ -19,41 +21,16 @@ interface Book {
   code: string;
 }
 
-const HomeScreen = ({navigation}: ScreenProp) => {
-  const books: Book[] = [
-    {
-      name: 'The Little Prince',
-      author: 'Antoine de Saint-Exupery',
-      date: '01.09.1998',
-      code: 'SJADH74637',
-    },
-    {
-      name: 'Jane Eyre',
-      author: 'Charlotte Bronte',
-      date: '30.11.1870',
-      code: '23LKOD87',
-    },
-    {
-      name: 'The Da Vinci Code',
-      author: 'Dan Brown',
-      date: '11.10.1999',
-      code: 'A35GN',
-    },
-    {
-      name: 'Pride and Prejudice',
-      author: 'Jane Austen',
-      date: '23.02.1679',
-      code: 'VNDQW7',
-    },
-  ];
+const HomeScreen = ({ navigation }: ScreenProp) => {
+  const books: Book[] = useSelector((state) => getBooks(state));
 
   return (
-    <SafeAreaView style={{display: 'flex', flex: 1, backgroundColor: 'beige'}}>
+    <SafeAreaView style={{ display: 'flex', flex: 1, backgroundColor: 'beige' }}>
       {/* <ScrollView style={{backgroundColor: 'beige'}}> */}
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <View style={styles.sectionContainer}>
           {/* Header */}
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             {/* Title */}
             <Text style={styles.titleText}>MY SHELF</Text>
 
@@ -61,7 +38,7 @@ const HomeScreen = ({navigation}: ScreenProp) => {
             <TouchableOpacity onPress={() => navigation.navigate('FormScreen')}>
               <Image
                 source={require('../assets/bookmark.png')}
-                style={{width: 70, height: 110, left: 50}}
+                style={{ width: 70, height: 110, left: 50 }}
               />
             </TouchableOpacity>
           </View>
@@ -70,7 +47,7 @@ const HomeScreen = ({navigation}: ScreenProp) => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => navigation.navigate('FormScreen')}>
-            <Text style={{color: 'beige', fontWeight: 'bold', fontSize: 18}}>
+            <Text style={{ color: 'beige', fontWeight: 'bold', fontSize: 18 }}>
               ADD BOOK
             </Text>
           </TouchableOpacity>
@@ -80,7 +57,7 @@ const HomeScreen = ({navigation}: ScreenProp) => {
             style={{}}
             data={books}
             keyExtractor={item => item.code}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <BookCard
                 name={item.name}
                 author={item.author}
@@ -99,7 +76,7 @@ const HomeScreen = ({navigation}: ScreenProp) => {
 const styles = StyleSheet.create({
   sectionContainer: {
     alignItems: 'center',
-    flex:1
+    flex: 1
   },
   titleText: {
     fontSize: 45,
