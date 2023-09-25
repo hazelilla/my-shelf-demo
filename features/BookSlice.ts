@@ -1,6 +1,10 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-const initialState = {
+interface BookState {
+    books: any[];
+}
+
+const initialState: BookState = {
     books: [],
 }
 
