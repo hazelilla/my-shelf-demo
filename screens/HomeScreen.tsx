@@ -1,18 +1,18 @@
 import React from 'react';
 import {
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   Image,
-  FlatList,
+  FlatList
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import BookCard from '../components/BookCard';
 import { ScreenProp } from '../types';
 import { getBooks } from '../features/BookSlice';
+import Icon from "react-native-vector-icons/Octicons";
 
 interface Book {
   name: string;
@@ -22,11 +22,11 @@ interface Book {
 }
 
 const HomeScreen = ({ navigation }: ScreenProp) => {
+
   const books: Book[] = useSelector((state) => getBooks(state));
 
   return (
     <SafeAreaView style={{ display: 'flex', flex: 1, backgroundColor: 'beige' }}>
-      {/* <ScrollView style={{backgroundColor: 'beige'}}> */}
       <View style={{ flex: 1 }}>
         <View style={styles.sectionContainer}>
           {/* Header */}
@@ -52,23 +52,29 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
             </Text>
           </TouchableOpacity>
 
-          {/* Book cards */}
+          {/* Book Cards */}
           <FlatList
-            style={{}}
             data={books}
             keyExtractor={item => item.code}
             renderItem={({ item }) => (
-              <BookCard
-                name={item.name}
-                author={item.author}
-                date={item.date}
-                code={item.code}
-              />
+              <View>
+
+                {/* delete button */}
+                <TouchableOpacity>
+                  <Icon name="repo-deleted" size={35} color="black" style={{marginBottom: 5}} />
+                </TouchableOpacity>
+              
+                <BookCard
+                  name={item.name}
+                  author={item.author}
+                  date={item.date}
+                  code={item.code}
+                />
+              </View>
             )}
           />
         </View>
       </View>
-      {/* </ScrollView> */}
     </SafeAreaView>
   );
 };

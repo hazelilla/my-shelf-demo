@@ -6,7 +6,8 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Image
+  Image,
+  Alert
 } from 'react-native';
 import { ScreenProp } from '../types';
 import Form from '../components/Form';
@@ -19,6 +20,8 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
   const [author, setAuthor] = useState();
   const [code, setCode] = useState();
   const [date, setDate] = useState();
+
+  const isFormEmpty = !name || !author || !code || !date;
 
   return (
     <SafeAreaView style={{ display: 'flex', flex: 1 }}>
@@ -55,6 +58,10 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
 
           {/* Done button */}
           <TouchableOpacity style={styles.button} onPress={() => {
+            isFormEmpty 
+            ? 
+            Alert.alert('Please fill all forms!') 
+            :
             dispatch(addBook({ ...{ name, author, date, code } }))
             navigation.navigate('HomeScreen')
           }}>
