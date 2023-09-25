@@ -6,7 +6,8 @@ import {
   View,
   TouchableOpacity,
   Image,
-  FlatList
+  FlatList,
+  Alert
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import BookCard from '../components/BookCard';
@@ -28,12 +29,45 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
   const dispatch = useDispatch();
 
   const removeBookFromShelf = (code: string) => {
-    dispatch(removeBook({ code }))
-  }
+    Alert.alert(
+      'Confirm Deletion',
+      'Are you sure you want to delete this book?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          onPress: () => {
+            dispatch(removeBook({ code }));
+          }
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+  
 
   const removeAllBooksFromShelf = () => {
-    dispatch(emptyShelf({}))
-  }
+    Alert.alert(
+      'Confirm Empty Shelf',
+      'Are you sure you want to empty your shelf?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel'
+        },
+        {
+          text: 'Empty Shelf',
+          onPress: () => {
+            dispatch(emptyShelf({}));
+          }
+        }
+      ],
+      { cancelable: false }
+    );
+  };
   
 
   return (
