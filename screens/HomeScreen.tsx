@@ -24,6 +24,8 @@ interface Book {
 
 const HomeScreen = ({ navigation }: ScreenProp) => {
 
+  const handleNavigation = () => {navigation.navigate('FormScreen')};
+
   const books: Book[] = useSelector((state) => getBooks(state));
 
   const dispatch = useDispatch();
@@ -47,7 +49,6 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
       { cancelable: false }
     );
   };
-  
 
   const removeAllBooksFromShelf = () => {
     Alert.alert(
@@ -80,7 +81,7 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
             <Text style={styles.titleText}>MY SHELF</Text>
 
             {/* Bookmark */}
-            <TouchableOpacity onPress={() => navigation.navigate('FormScreen')}>
+            <TouchableOpacity onPress={handleNavigation}>
               <Image
                 source={require('../assets/bookmark.png')}
                 style={styles.bookmark}
@@ -91,7 +92,7 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
           {/* Add Book Button */}
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('FormScreen')}>
+            onPress={handleNavigation}>
             <Text style={styles.buttonText}>
               ADD BOOK
             </Text>
@@ -112,7 +113,6 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
             keyExtractor={item => item.code}
             renderItem={({ item }) => (
               <View>
-
                 {/* Delete Button */}
                 <TouchableOpacity onPress={() => removeBookFromShelf(item.code)}>
                   <Icon name="repo-deleted" size={35} style={styles.icon} />

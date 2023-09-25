@@ -15,7 +15,18 @@ import { addBook } from '../features/BookSlice';
 import { useDispatch } from "react-redux";
 
 const AddBookScreen = ({ navigation }: ScreenProp) => {
+  const handleNavigation = () => {navigation.navigate('HomeScreen')};
+  const handleDoneButton = () => {
+    if (isFormEmpty) {
+      Alert.alert('Please fill all forms!') 
+      } else {
+      dispatch(addBook({ ...{ name, author, date, code } }))
+      navigation.navigate('HomeScreen')
+      }
+  };
+
   const dispatch = useDispatch();
+
   const [name, setName] = useState();
   const [author, setAuthor] = useState();
   const [code, setCode] = useState();
@@ -32,7 +43,7 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
           <View style={styles.header}>
 
             {/* Bookmark */}
-            <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
+            <TouchableOpacity onPress={handleNavigation}>
               <Image source={require('../assets/bookmark.png')} style={styles.bookmark} />
             </TouchableOpacity>
 
@@ -58,14 +69,7 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
           </View>
 
           {/* Done button */}
-          <TouchableOpacity style={styles.button} onPress={() => {
-            if (isFormEmpty) {
-            Alert.alert('Please fill all forms!') 
-            } else {
-            dispatch(addBook({ ...{ name, author, date, code } }))
-            navigation.navigate('HomeScreen')
-            }
-          }}>
+          <TouchableOpacity style={styles.button} onPress={handleDoneButton}>
             <Text style={styles.buttonText}>DONE</Text>
           </TouchableOpacity>
 

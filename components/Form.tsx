@@ -3,11 +3,14 @@ import { Text, View } from "react-native-ui-lib";
 import { StyleSheet, TextInput } from "react-native";
 
 const Form = ({name, setField} : {name: string, setField:Function}) => {
+
+    const handleSetField = (value: any) => {setField(value)}
+
     return(
         <View>
             <View style={styles.form}>
                 <Text style={styles.formText}>{name}</Text>
-                <TextInput onChangeText={(value)=>setField(value)} style={styles.input}/>
+                <TextInput onChangeText={handleSetField} style={styles.input}/>
             </View>
         </View>
     );
