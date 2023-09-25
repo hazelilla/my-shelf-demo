@@ -24,15 +24,16 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
   const isFormEmpty = !name || !author || !code || !date;
 
   return (
-    <SafeAreaView style={{ display: 'flex', flex: 1 }}>
-      <ScrollView style={{ backgroundColor: "beige" }} >
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView style={styles.scrollView}>
         <View style={styles.sectionContainer}>
 
           {/* Header */}
-          <View style={{ flexDirection: 'row' }}>
+          <View style={styles.header}>
+
             {/* Bookmark */}
             <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
-              <Image source={require('../assets/bookmark.png')} style={{ width: 70, height: 110 }} />
+              <Image source={require('../assets/bookmark.png')} style={styles.bookmark} />
             </TouchableOpacity>
 
             {/* Title */}
@@ -41,7 +42,7 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
 
 
           {/* Form */}
-          <View style={{ marginTop: 40 }}>
+          <View style={styles.formView}>
             <Form name={"Name:"} setField={(value: any)=>{
                 setName(value)
             }} />
@@ -65,7 +66,7 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
             navigation.navigate('HomeScreen')
             }
           }}>
-            <Text style={{ color: "beige", fontWeight: "bold", fontSize: 18 }}>DONE</Text>
+            <Text style={styles.buttonText}>DONE</Text>
           </TouchableOpacity>
 
         </View>
@@ -76,9 +77,23 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    display: 'flex', 
+    flex: 1
+  },
+  scrollView: {
+    backgroundColor: 'beige'
+  },
   sectionContainer: {
     alignItems: 'flex-start',
     marginLeft: 20
+  },
+  header: {
+    flexDirection: 'row'
+  },
+  bookmark: {
+    width: 70, 
+    height: 110
   },
   titleText: {
     fontSize: 45,
@@ -86,6 +101,9 @@ const styles = StyleSheet.create({
     color: 'darkkhaki',
     fontFamily: 'arial',
     alignSelf: 'center',
+  },
+  formView: {
+    marginTop: 40
   },
   button: {
     backgroundColor: 'brown',
@@ -95,6 +113,11 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderColor: 'darkkhaki',
     marginTop: 20
+  },
+  buttonText: {
+    color: "beige", 
+    fontWeight: "bold", 
+    fontSize: 18
   }
 });
 

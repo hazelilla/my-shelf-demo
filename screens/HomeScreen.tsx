@@ -71,11 +71,11 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
   
 
   return (
-    <SafeAreaView style={{ display: 'flex', flex: 1, backgroundColor: 'beige' }}>
-      <View style={{ flex: 1 }}>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
         <View style={styles.sectionContainer}>
           {/* Header */}
-          <View style={{ flexDirection: 'row' }}>
+          <View style={styles.header}>
             {/* Title */}
             <Text style={styles.titleText}>MY SHELF</Text>
 
@@ -83,7 +83,7 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
             <TouchableOpacity onPress={() => navigation.navigate('FormScreen')}>
               <Image
                 source={require('../assets/bookmark.png')}
-                style={{ width: 70, height: 110, left: 50 }}
+                style={styles.bookmark}
               />
             </TouchableOpacity>
           </View>
@@ -92,7 +92,7 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => navigation.navigate('FormScreen')}>
-            <Text style={{ color: 'beige', fontWeight: 'bold', fontSize: 18 }}>
+            <Text style={styles.buttonText}>
               ADD BOOK
             </Text>
           </TouchableOpacity>
@@ -115,7 +115,7 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
 
                 {/* Delete Button */}
                 <TouchableOpacity onPress={() => removeBookFromShelf(item.code)}>
-                  <Icon name="repo-deleted" size={35} color="black" style={{marginBottom: 5}} />
+                  <Icon name="repo-deleted" size={35} style={styles.icon} />
                 </TouchableOpacity>
               
                 <BookCard
@@ -134,9 +134,20 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    display: 'flex', 
+    flex: 1, 
+    backgroundColor: 'beige'
+  },
+  container: {
+    flex: 1
+  },
   sectionContainer: {
     alignItems: 'center',
     flex: 1
+  },
+  header: {
+    flexDirection: 'row'
   },
   titleText: {
     fontSize: 45,
@@ -146,6 +157,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     left: 20,
   },
+  bookmark: {
+    width: 70, 
+    height: 110, 
+    left: 50 
+  },
   button: {
     backgroundColor: 'brown',
     padding: 10,
@@ -153,6 +169,11 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderColor: 'darkkhaki',
     margin: 20,
+  },
+  buttonText: {
+    color: 'beige', 
+    fontWeight: 'bold', 
+    fontSize: 18
   },
   emptyShelf: {
     fontSize: 20, 
@@ -162,6 +183,10 @@ const styles = StyleSheet.create({
     borderColor: 'gray', 
     paddingHorizontal: 10,
     marginBottom: 15
+  },
+  icon: {
+    color: "black",
+    marginBottom: 5
   }
 });
 
