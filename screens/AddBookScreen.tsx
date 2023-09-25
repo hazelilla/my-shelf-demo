@@ -58,12 +58,12 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
 
           {/* Done button */}
           <TouchableOpacity style={styles.button} onPress={() => {
-            isFormEmpty 
-            ? 
+            if (isFormEmpty) {
             Alert.alert('Please fill all forms!') 
-            :
+            } else {
             dispatch(addBook({ ...{ name, author, date, code } }))
             navigation.navigate('HomeScreen')
+            }
           }}>
             <Text style={{ color: "beige", fontWeight: "bold", fontSize: 18 }}>DONE</Text>
           </TouchableOpacity>
