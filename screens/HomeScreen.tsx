@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -7,13 +7,13 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
-  Alert
+  Alert,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import BookCard from '../components/BookCard';
-import { ScreenProp } from '../types';
-import { getBooks, removeBook, emptyShelf } from '../features/BookSlice';
-import Icon from "react-native-vector-icons/Octicons";
+import {ScreenProp} from '../types';
+import {getBooks, removeBook, emptyShelf} from '../features/BookSlice';
+import Icon from 'react-native-vector-icons/Octicons';
 import SortModal from '../modals/SortModal';
 
 interface Book {
@@ -24,73 +24,104 @@ interface Book {
   price: number;
 }
 
-const HomeScreen = ({ navigation }: ScreenProp) => {
+const HomeScreen = ({navigation}: ScreenProp) => {
+  const handleNavigation = () => {
+    navigation.navigate('FormScreen');
+  };
+  const [_books, setBooks] = useState<Book[]>([]);
 
-  const handleNavigation = () => {navigation.navigate('FormScreen')};
+  const books: Book[] = useSelector(state => getBooks(state));
+  const [sortingOption, setSortingOption] = useState<keyof Book>('name');
 
-  const books: Book[] = useSelector((state) => getBooks(state));
-
-  const [sortingOption, setSortingOption] = useState<string | null>(null);
-  const handleSortOptionChange = (option: string, isSelected: boolean) => {
-    if (isSelected) {
-      setSortingOption(option);
-    } else {
-      setSortingOption(null);
-    }
+  const handleSortOptionChange = (option: keyof Book) => {
+    setSortingOption(option);
   };
 
-  const [sortingDirection, setSortingDirection] = useState<string | null>(null);
-  const handleSortingDirection = (option: string, isSelected: boolean) => {
-    if (isSelected) {
-      setSortingDirection(option);
+  const [sortingDirection, setSortingDirection] =
+    useState<string>('descending');
+  const handleSortingDirection = (option: string) => {
+    setSortingDirection(option);
+  };
+  // const sortedBooks = [...books];
+  // if (sortingOption === 'bookName' && sortingDirection === 'ascending') {
+  //   sortedBooks.sort((a, b) => (a.name > b.name ? 1 : -1));
+  // } else if (
+  //   sortingOption === 'bookName' &&
+  //   sortingDirection === 'descending'
+  // ) {
+  //   sortedBooks.sort((a, b) => (a.name > b.name ? -1 : 1));
+  // } else if (sortingOption === 'author' && sortingDirection === 'ascending') {
+  //   sortedBooks.sort((a, b) => (a.author > b.author ? 1 : -1));
+  // } else if (sortingOption === 'author' && sortingDirection === 'descending') {
+  //   sortedBooks.sort((a, b) => (a.author > b.author ? -1 : 1));
+  // } else if (sortingOption === 'date' && sortingDirection === 'ascending') {
+  //   sortedBooks.sort((a, b) => {
+  //     const dateA: any = new Date(
+  //       a.date.replace(/-/g, '.').replace(/\./g, '-'),
+  //     );
+  //     const dateB: any = new Date(
+  //       b.date.replace(/-/g, '.').replace(/\./g, '-'),
+  //     );
+  //     if (dateA.getFullYear() !== dateB.getFullYear()) {
+  //       return dateA.getFullYear() - dateB.getFullYear();
+  //     } else if (dateA.getMonth() !== dateB.getMonth()) {
+  //       return dateA.getMonth() - dateB.getMonth();
+  //     } else {
+  //       return dateA.getDate() - dateB.getDate();
+  //     }
+  //   });
+  // } else if (sortingOption === 'date' && sortingDirection === 'descending') {
+  //   sortedBooks.sort((a, b) => {
+  //     const dateA: any = new Date(
+  //       a.date.replace(/-/g, '.').replace(/\./g, '-'),
+  //     );
+  //     const dateB: any = new Date(
+  //       b.date.replace(/-/g, '.').replace(/\./g, '-'),
+  //     );
+  //     if (dateA.getFullYear() !== dateB.getFullYear()) {
+  //       return dateB.getFullYear() - dateA.getFullYear();
+  //     } else if (dateA.getMonth() !== dateB.getMonth()) {
+  //       return dateB.getMonth() - dateA.getMonth();
+  //     } else {
+  //       return dateB.getDate() - dateA.getDate();
+  //     }
+  //   });
+  // } else if (sortingOption === 'price' && sortingDirection === 'ascending') {
+  //   sortedBooks.sort((a, b) => a.price - b.price);
+  // } else if (sortingOption === 'price' && sortingDirection === 'descending') {
+  //   sortedBooks.sort((a, b) => b.price - a.price);
+  // }
+
+  useEffect(() => {
+    if (books) {
+      setBooks(books);
+    }
+  }, [books]);
+  const sortedBooks = (key: keyof Book): Book[] => {
+    const sortedBooks = _books.slice().sort(function (a, b) {
+      switch (key) {
+        case 'name':
+          return a.name.localeCompare(b.name);
+        case 'author':
+          return a.author.localeCompare(b.author);
+        case 'price':
+          return +a.price - +b.price;
+        case 'code':
+          return a.code.localeCompare(b.code);
+        default:
+          return 0;
+      }
+    });
+    if (sortingDirection !== 'ascending') {
+      return sortedBooks.slice().reverse();
     } else {
-      setSortingDirection(null);
+      return sortedBooks;
     }
   };
-
-  const sortedBooks = [...books];
-  if (sortingOption === "bookName" && sortingDirection === "ascending"){
-    sortedBooks.sort((a, b) => a.name > b.name ? 1 : -1)
-  } else if (sortingOption === "bookName" && sortingDirection === "descending"){
-    sortedBooks.sort((a, b) => a.name > b.name ? -1 : 1)
-  } else if (sortingOption === "author" && sortingDirection === "ascending"){
-    sortedBooks.sort((a, b) => a.author > b.author ? 1 : -1)
-  } else if (sortingOption === "author" && sortingDirection === "descending"){
-    sortedBooks.sort((a, b) => a.author > b.author ? -1 : 1)
-  } else if (sortingOption === "date" && sortingDirection === "ascending"){
-    sortedBooks.sort((a, b) => {
-      const dateA: any = new Date(a.date.replace(/-/g, '.').replace(/\./g, '-'));
-      const dateB: any = new Date(b.date.replace(/-/g, '.').replace(/\./g, '-'));
-      if (dateA.getFullYear() !== dateB.getFullYear()) {
-        return dateA.getFullYear() - dateB.getFullYear();
-      } else if (dateA.getMonth() !== dateB.getMonth()) {
-        return dateA.getMonth() - dateB.getMonth();
-      } else {
-        return dateA.getDate() - dateB.getDate();
-      }
-    });
-  } else if (sortingOption === "date" && sortingDirection === "descending"){
-    sortedBooks.sort((a, b) => {
-      const dateA: any = new Date(a.date.replace(/-/g, '.').replace(/\./g, '-'));
-      const dateB: any = new Date(b.date.replace(/-/g, '.').replace(/\./g, '-'));
-      if (dateA.getFullYear() !== dateB.getFullYear()) {
-        return dateB.getFullYear() - dateA.getFullYear();
-      } else if (dateA.getMonth() !== dateB.getMonth()) {
-        return dateB.getMonth() - dateA.getMonth();
-      } else {
-        return dateB.getDate() - dateA.getDate();
-      }
-    });
-  } else if (sortingOption === "price" && sortingDirection === "ascending"){
-    sortedBooks.sort((a, b) => a.price - b.price)
-  } else if (sortingOption === "price" && sortingDirection === "descending"){
-    sortedBooks.sort((a, b) => b.price - a.price)
-  }
-
   const dispatch = useDispatch();
 
-  const [modalVisible, setModalVisible] = useState(false)
-  
+  const [modalVisible, setModalVisible] = useState(false);
+
   const removeBookFromShelf = (code: string) => {
     Alert.alert(
       'Confirm Deletion',
@@ -103,11 +134,11 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
         {
           text: 'Delete',
           onPress: () => {
-            dispatch(removeBook({ code }));
-          }
-        }
+            dispatch(removeBook({code}));
+          },
+        },
       ],
-      { cancelable: false }
+      {cancelable: false},
     );
   };
 
@@ -118,19 +149,18 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
       [
         {
           text: 'Cancel',
-          style: 'cancel'
+          style: 'cancel',
         },
         {
           text: 'Empty Shelf',
           onPress: () => {
             dispatch(emptyShelf({}));
-          }
-        }
+          },
+        },
       ],
-      { cancelable: false }
+      {cancelable: false},
     );
   };
-  
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -151,53 +181,50 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
           </View>
 
           {/* Add Book Button */}
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleNavigation}>
-            <Text style={styles.buttonText}>
-              ADD BOOK
-            </Text>
+          <TouchableOpacity style={styles.button} onPress={handleNavigation}>
+            <Text style={styles.buttonText}>ADD BOOK</Text>
           </TouchableOpacity>
 
           {/* Empty Shelf Button */}
           {books.length > 1 && (
             <View style={styles.actions}>
               <TouchableOpacity onPress={removeAllBooksFromShelf}>
-                <Text style={styles.emptyShelf}>
-                  EMPTY SHELF
-                </Text>
+                <Text style={styles.emptyShelf}>EMPTY SHELF</Text>
               </TouchableOpacity>
 
               {/* Sort */}
               <View>
-                {
-                  modalVisible &&
-                  <SortModal 
-                    visible={modalVisible}
+                {modalVisible && (
+                  <SortModal
+                    visible={true}
                     hideModal={() => setModalVisible(false)}
-                    optionChange = {handleSortOptionChange}
-                    directionChange = {handleSortingDirection}
+                    optionChange={handleSortOptionChange}
+                    directionChange={handleSortingDirection}
                   />
-                }
-                
-                <TouchableOpacity onPress={() => { setModalVisible(true) }}>
-                  <Icon name='sort-desc' size={35} style={styles.sort}/>  
+                )}
+
+                <TouchableOpacity
+                  onPress={() => {
+                    setModalVisible(true);
+                  }}>
+                  <Icon name="sort-desc" size={35} style={styles.sort} />
                 </TouchableOpacity>
               </View>
             </View>
-          )}  
+          )}
 
           {/* Book Cards */}
           <FlatList
-            data={sortedBooks}
+            data={sortedBooks(sortingOption)}
             keyExtractor={item => item.code}
-            renderItem={({ item }) => (
+            renderItem={({item}) => (
               <View>
                 {/* Delete Button */}
-                <TouchableOpacity onPress={() => removeBookFromShelf(item.code)}>
+                <TouchableOpacity
+                  onPress={() => removeBookFromShelf(item.code)}>
                   <Icon name="repo-deleted" size={35} style={styles.icon} />
                 </TouchableOpacity>
-              
+
                 <BookCard
                   name={item.name}
                   author={item.author}
@@ -216,19 +243,19 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
 
 const styles = StyleSheet.create({
   safeArea: {
-    display: 'flex', 
-    flex: 1, 
-    backgroundColor: 'beige'
+    display: 'flex',
+    flex: 1,
+    backgroundColor: 'beige',
   },
   container: {
-    flex: 1
+    flex: 1,
   },
   sectionContainer: {
     alignItems: 'center',
-    flex: 1
+    flex: 1,
   },
   header: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   titleText: {
     fontSize: 45,
@@ -239,9 +266,9 @@ const styles = StyleSheet.create({
     left: 20,
   },
   bookmark: {
-    width: 70, 
-    height: 110, 
-    left: 50 
+    width: 70,
+    height: 110,
+    left: 50,
   },
   button: {
     backgroundColor: 'brown',
@@ -252,31 +279,31 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   buttonText: {
-    color: 'beige', 
-    fontWeight: 'bold', 
-    fontSize: 18
+    color: 'beige',
+    fontWeight: 'bold',
+    fontSize: 18,
   },
   actions: {
     flexDirection: 'row',
   },
   emptyShelf: {
-    fontSize: 20, 
-    borderBottomWidth: 1, 
-    borderRightWidth: 1, 
-    borderLeftWidth:1, 
-    borderColor: 'gray', 
+    fontSize: 20,
+    borderBottomWidth: 1,
+    borderRightWidth: 1,
+    borderLeftWidth: 1,
+    borderColor: 'gray',
     paddingHorizontal: 10,
     marginBottom: 15,
-    left: "10%"
+    left: '10%',
   },
   sort: {
-    color: "black",
-    left: "250%"
+    color: 'black',
+    left: '250%',
   },
   icon: {
-    color: "black",
-    marginBottom: 5
-  }
+    color: 'black',
+    marginBottom: 5,
+  },
 });
 
 export default HomeScreen;
