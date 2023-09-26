@@ -20,7 +20,7 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
     if (isFormEmpty) {
       Alert.alert('Please fill all forms!') 
       } else {
-      dispatch(addBook({ ...{ name, author, date, code } }))
+      dispatch(addBook({ ...{ name, author, date, code, price } }))
       navigation.navigate('HomeScreen')
       }
   };
@@ -31,8 +31,9 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
   const [author, setAuthor] = useState();
   const [code, setCode] = useState();
   const [date, setDate] = useState();
+  const [price, setPrice] = useState();
 
-  const isFormEmpty = !name || !author || !code || !date;
+  const isFormEmpty = !name || !author || !code || !date || !price;
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -65,6 +66,9 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
             }} />
             <Form name={"Code:"} setField={(value: any)=>{
                 setCode(value)
+            }} />
+            <Form name={"Price:"} setField={(value: any)=>{
+                setPrice(value)
             }} />
           </View>
 

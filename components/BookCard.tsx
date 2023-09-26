@@ -2,7 +2,7 @@ import React from "react";
 import { Text, View } from "react-native-ui-lib";
 import { StyleSheet } from "react-native";
 
-const BookCard = ({name, author, date, code} : {name: string, author: string, date: string, code: string}) => {
+const BookCard = ({name, author, date, code, price} : {name: string, author: string, date: any, code: string, price: number}) => {
     return(
         <View>
             <View style={styles.book}>
@@ -10,6 +10,7 @@ const BookCard = ({name, author, date, code} : {name: string, author: string, da
                 <Text style={styles.bookText}>Author: {author}</Text>
                 <Text style={styles.bookText}>Date: {date}</Text>
                 <Text style={styles.bookText}>Code: {code}</Text>
+                <Text style={styles.bookText}>Price: {price}$</Text>
             </View>
             <View style={styles.shelf}/>
         </View>
