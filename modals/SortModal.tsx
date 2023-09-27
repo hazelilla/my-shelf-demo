@@ -24,8 +24,7 @@ const SortModal = ({
     directionChange,
 }: SortModalProps) => {
     const [selectedSortType, setSelectedSortType] = useState();
-    const [sortByAscending, setSortByAscending] = useState(false);
-    const [sortByDescending, setSortByDescending] = useState(false);
+    const [selectedSortDirection, setSelectedSortDirection] = useState();
     const sortingOptions = [
         {
             id: 0,
@@ -39,20 +38,29 @@ const SortModal = ({
         },
         {
             id: 2,
-            name: 'Date',
-            key: 'date',
-        },
-        {
-            id: 3,
             name: 'Price',
             key: 'price',
         },
         {
-            id: 4,
-            name: 'Code',
-            key: 'code',
-        },
+            id: 3,
+            name: 'Date',
+            key: 'date',
+        },    
+
     ];
+
+    const directionOptions = [
+        {
+            id: 0,
+            name: 'Ascending',
+            key: 'ascending',
+        },
+        {
+            id: 1,
+            name: 'Descending',
+            key: 'descending'
+        }
+    ]
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -74,9 +82,8 @@ const SortModal = ({
                             <Text style={styles.title}>Sort by:</Text>
                         </View>
 
+                        {/* Checkbox for sorting by book name, author, date and price */}
                         <View style={styles.checkBoxWrapper}>
-
-                            {/* Checkbox for sorting by book name, author, date and price */}
                             {sortingOptions.map((item: any, index: number) => {
                                 return (
                                     <TouchableOpacity
@@ -99,40 +106,24 @@ const SortModal = ({
 
                         {/* Ascending and Descending checkbox*/}
                         <View style={{ borderTopWidth: 3 }}>
-                            <TouchableOpacity
-                                style={styles.checkboxContainer}
-                                onPress={() => {
-                                    setSortByAscending(!sortByAscending);
-                                    directionChange('ascending', !sortByAscending);
-                                }}>
-                                <Text style={styles.checkboxLabel}>Ascending</Text>
-                                <Icon
-                                    name={
-                                        sortByAscending
-                                            ? 'checkbox-marked'
-                                            : 'checkbox-blank-outline'
-                                    }
-                                    color="black"
-                                    size={30}
-                                />
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={styles.checkboxContainer}
-                                onPress={() => {
-                                    setSortByDescending(!sortByDescending);
-                                    directionChange('descending', !sortByDescending);
-                                }}>
-                                <Text style={styles.checkboxLabel}>Descending</Text>
-                                <Icon
-                                    name={
-                                        sortByDescending
-                                            ? 'checkbox-marked'
-                                            : 'checkbox-blank-outline'
-                                    }
-                                    color="black"
-                                    size={30}
-                                />
-                            </TouchableOpacity>
+                            {directionOptions.map((item: any, index: number) => {
+                                return (
+                                    <TouchableOpacity
+                                        key={index}
+                                        style={styles.checkboxContainer}
+                                        onPress={() => {
+                                            setSelectedSortDirection(item.id);
+                                            directionChange(item.key);
+                                        }}>
+                                        <Text style={styles.checkboxLabel}>{item.name}</Text>
+                                        {item.id === selectedSortDirection
+                                            ?
+                                            <Icon name='checkbox-marked' color="black" size={30} />
+                                            :
+                                            <Icon name='checkbox-blank-outline' color="black" size={30} />}
+                                    </TouchableOpacity>
+                                );
+                            })}
                         </View>
 
                         {/* Done Button */}

@@ -31,73 +31,34 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
   const [_books, setBooks] = useState<Book[]>([]);
 
   const books: Book[] = useSelector(state => getBooks(state));
-  const [sortingOption, setSortingOption] = useState<keyof Book>('name');
 
+  const [sortingOption, setSortingOption] = useState<keyof Book>('name');
   const handleSortOptionChange = (option: keyof Book) => {
     setSortingOption(option);
   };
 
-  const [sortingDirection, setSortingDirection] =
-    useState<string>('descending');
+  const [sortingDirection, setSortingDirection] = useState<string>('descending');
   const handleSortingDirection = (option: string) => {
     setSortingDirection(option);
   };
-  // const sortedBooks = [...books];
-  // if (sortingOption === 'bookName' && sortingDirection === 'ascending') {
-  //   sortedBooks.sort((a, b) => (a.name > b.name ? 1 : -1));
-  // } else if (
-  //   sortingOption === 'bookName' &&
-  //   sortingDirection === 'descending'
-  // ) {
-  //   sortedBooks.sort((a, b) => (a.name > b.name ? -1 : 1));
-  // } else if (sortingOption === 'author' && sortingDirection === 'ascending') {
-  //   sortedBooks.sort((a, b) => (a.author > b.author ? 1 : -1));
-  // } else if (sortingOption === 'author' && sortingDirection === 'descending') {
-  //   sortedBooks.sort((a, b) => (a.author > b.author ? -1 : 1));
-  // } else if (sortingOption === 'date' && sortingDirection === 'ascending') {
-  //   sortedBooks.sort((a, b) => {
-  //     const dateA: any = new Date(
-  //       a.date.replace(/-/g, '.').replace(/\./g, '-'),
-  //     );
-  //     const dateB: any = new Date(
-  //       b.date.replace(/-/g, '.').replace(/\./g, '-'),
-  //     );
-  //     if (dateA.getFullYear() !== dateB.getFullYear()) {
-  //       return dateA.getFullYear() - dateB.getFullYear();
-  //     } else if (dateA.getMonth() !== dateB.getMonth()) {
-  //       return dateA.getMonth() - dateB.getMonth();
-  //     } else {
-  //       return dateA.getDate() - dateB.getDate();
-  //     }
-  //   });
-  // } else if (sortingOption === 'date' && sortingDirection === 'descending') {
-  //   sortedBooks.sort((a, b) => {
-  //     const dateA: any = new Date(
-  //       a.date.replace(/-/g, '.').replace(/\./g, '-'),
-  //     );
-  //     const dateB: any = new Date(
-  //       b.date.replace(/-/g, '.').replace(/\./g, '-'),
-  //     );
-  //     if (dateA.getFullYear() !== dateB.getFullYear()) {
-  //       return dateB.getFullYear() - dateA.getFullYear();
-  //     } else if (dateA.getMonth() !== dateB.getMonth()) {
-  //       return dateB.getMonth() - dateA.getMonth();
-  //     } else {
-  //       return dateB.getDate() - dateA.getDate();
-  //     }
-  //   });
-  // } else if (sortingOption === 'price' && sortingDirection === 'ascending') {
-  //   sortedBooks.sort((a, b) => a.price - b.price);
-  // } else if (sortingOption === 'price' && sortingDirection === 'descending') {
-  //   sortedBooks.sort((a, b) => b.price - a.price);
-  // }
+
+  const parseDate = (dateStr: string): Date => {
+    const [month, day, year] = dateStr.split(' ');
+    const monthIndex = {
+      Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+      Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
+    };
+    const parsedMonthIndex = monthIndex[month as keyof typeof monthIndex] ?? 0;
+  
+    return new Date(parseInt(year), parsedMonthIndex, parseInt(day));
+  };
 
   useEffect(() => {
     if (books) {
       setBooks(books);
     }
   }, [books]);
-  
+
   const sortedBooks = (key: keyof Book): Book[] => {
     const sortedBooks = _books.slice().sort(function (a, b) {
       switch (key) {
@@ -108,8 +69,8 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
         case 'price':
           return +a.price - +b.price;
         case 'date':
-          const dateA = new Date(a.date);
-          const dateB = new Date(b.date);
+          const dateA = parseDate(a.date);
+          const dateB = parseDate(b.date);
           return dateA.getTime() - dateB.getTime();
         default:
           return 0;
@@ -310,3 +271,61 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
+
+
+
+
+
+
+
+
+
+// const sortedBooks = [...books];
+  // if (sortingOption === 'bookName' && sortingDirection === 'ascending') {
+  //   sortedBooks.sort((a, b) => (a.name > b.name ? 1 : -1));
+  // } else if (
+  //   sortingOption === 'bookName' &&
+  //   sortingDirection === 'descending'
+  // ) {
+  //   sortedBooks.sort((a, b) => (a.name > b.name ? -1 : 1));
+  // } else if (sortingOption === 'author' && sortingDirection === 'ascending') {
+  //   sortedBooks.sort((a, b) => (a.author > b.author ? 1 : -1));
+  // } else if (sortingOption === 'author' && sortingDirection === 'descending') {
+  //   sortedBooks.sort((a, b) => (a.author > b.author ? -1 : 1));
+  // } else if (sortingOption === 'date' && sortingDirection === 'ascending') {
+  //   sortedBooks.sort((a, b) => {
+  //     const dateA: any = new Date(
+  //       a.date.replace(/-/g, '.').replace(/\./g, '-'),
+  //     );
+  //     const dateB: any = new Date(
+  //       b.date.replace(/-/g, '.').replace(/\./g, '-'),
+  //     );
+  //     if (dateA.getFullYear() !== dateB.getFullYear()) {
+  //       return dateA.getFullYear() - dateB.getFullYear();
+  //     } else if (dateA.getMonth() !== dateB.getMonth()) {
+  //       return dateA.getMonth() - dateB.getMonth();
+  //     } else {
+  //       return dateA.getDate() - dateB.getDate();
+  //     }
+  //   });
+  // } else if (sortingOption === 'date' && sortingDirection === 'descending') {
+  //   sortedBooks.sort((a, b) => {
+  //     const dateA: any = new Date(
+  //       a.date.replace(/-/g, '.').replace(/\./g, '-'),
+  //     );
+  //     const dateB: any = new Date(
+  //       b.date.replace(/-/g, '.').replace(/\./g, '-'),
+  //     );
+  //     if (dateA.getFullYear() !== dateB.getFullYear()) {
+  //       return dateB.getFullYear() - dateA.getFullYear();
+  //     } else if (dateA.getMonth() !== dateB.getMonth()) {
+  //       return dateB.getMonth() - dateA.getMonth();
+  //     } else {
+  //       return dateB.getDate() - dateA.getDate();
+  //     }
+  //   });
+  // } else if (sortingOption === 'price' && sortingDirection === 'ascending') {
+  //   sortedBooks.sort((a, b) => a.price - b.price);
+  // } else if (sortingOption === 'price' && sortingDirection === 'descending') {
+  //   sortedBooks.sort((a, b) => b.price - a.price);
+  // }
