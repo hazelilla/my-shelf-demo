@@ -97,6 +97,7 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
       setBooks(books);
     }
   }, [books]);
+  
   const sortedBooks = (key: keyof Book): Book[] => {
     const sortedBooks = _books.slice().sort(function (a, b) {
       switch (key) {
