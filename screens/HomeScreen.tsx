@@ -37,7 +37,7 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
     setSortingOption(option);
   };
 
-  const [sortingDirection, setSortingDirection] = useState<string>('descending');
+  const [sortingDirection, setSortingDirection] = useState<string>('ascending');
   const handleSortingDirection = (option: string) => {
     setSortingDirection(option);
   };
@@ -164,6 +164,8 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
                     hideModal={() => setModalVisible(false)}
                     optionChange={handleSortOptionChange}
                     directionChange={handleSortingDirection}
+                    selectedOption={sortingOption}
+                    selectedDirection={sortingDirection}
                   />
                 )}
 

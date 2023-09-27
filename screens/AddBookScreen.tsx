@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
   iosButtonText: {
     fontSize: 14,
     fontWeight: "500",
-    color: "#fff"
+    color: "gray"
   }
 });
 

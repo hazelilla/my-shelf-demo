@@ -15,6 +15,8 @@ interface SortModalProps {
     hideModal: () => void;
     optionChange: any;
     directionChange: any;
+    selectedOption: string;
+    selectedDirection: string;
 }
 
 const SortModal = ({
@@ -22,9 +24,11 @@ const SortModal = ({
     hideModal,
     optionChange,
     directionChange,
+    selectedOption,
+    selectedDirection
 }: SortModalProps) => {
-    const [selectedSortType, setSelectedSortType] = useState();
-    const [selectedSortDirection, setSelectedSortDirection] = useState();
+    const [selectedSortType, setSelectedSortType] = useState(selectedOption);
+    const [selectedSortDirection, setSelectedSortDirection] = useState(selectedDirection);
     const sortingOptions = [
         {
             id: 0,
@@ -90,11 +94,11 @@ const SortModal = ({
                                         key={index}
                                         style={styles.checkboxContainer}
                                         onPress={() => {
-                                            setSelectedSortType(item.id);
+                                            setSelectedSortType(item.key);
                                             optionChange(item.key);
                                         }}>
                                         <Text style={styles.checkboxLabel}>{item.name}</Text>
-                                        {item.id === selectedSortType
+                                        {item.key === selectedSortType
                                             ?
                                             <Icon name='checkbox-marked' color="black" size={30} />
                                             :
@@ -112,11 +116,11 @@ const SortModal = ({
                                         key={index}
                                         style={styles.checkboxContainer}
                                         onPress={() => {
-                                            setSelectedSortDirection(item.id);
+                                            setSelectedSortDirection(item.key);
                                             directionChange(item.key);
                                         }}>
                                         <Text style={styles.checkboxLabel}>{item.name}</Text>
-                                        {item.id === selectedSortDirection
+                                        {item.key === selectedSortDirection
                                             ?
                                             <Icon name='checkbox-marked' color="black" size={30} />
                                             :
