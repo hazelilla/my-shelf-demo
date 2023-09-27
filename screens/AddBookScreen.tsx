@@ -7,31 +7,56 @@ import {
   View,
   TouchableOpacity,
   Image,
-  Alert
+  Alert,
+  Pressable,
+  TextInput,
+  Platform
 } from 'react-native';
 import { ScreenProp } from '../types';
 import Form from '../components/Form';
 import { addBook } from '../features/BookSlice';
 import { useDispatch } from "react-redux";
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const AddBookScreen = ({ navigation }: ScreenProp) => {
-  const handleNavigation = () => {navigation.navigate('HomeScreen')};
+  const handleNavigation = () => { navigation.navigate('HomeScreen') };
   const handleDoneButton = () => {
     if (isFormEmpty) {
-      Alert.alert('Please fill all forms!') 
-      } else {
+      Alert.alert('Please fill all forms!')
+    } else {
       dispatch(addBook({ ...{ name, author, date, code, price } }))
       navigation.navigate('HomeScreen')
-      }
+    }
   };
 
   const dispatch = useDispatch();
 
   const [name, setName] = useState();
   const [author, setAuthor] = useState();
+  const [date, setDate] = useState("");
   const [code, setCode] = useState();
-  const [date, setDate] = useState();
   const [price, setPrice] = useState();
+
+  const [bookDate, setBookDate] = useState(new Date());
+  const [showCalendar, setShowCalendat] = useState(false);
+
+  const toggleCalendar = () => {
+    setShowCalendat(!showCalendar);
+  };
+
+  const onChange = ({ type }: any, selectedDate: any) => {
+    if (type == "set") {
+      const currentDate = selectedDate;
+      setBookDate(currentDate);
+
+      if(Platform.OS === "android"){
+        toggleCalendar();
+        setDate(currentDate.toDateString());
+      }
+    } else {
+      toggleCalendar();
+    }
+  };
 
   const isFormEmpty = !name || !author || !code || !date || !price;
 
@@ -55,29 +80,51 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
 
           {/* Form */}
           <View style={styles.formView}>
-            <Form name={"Name:"} setField={(value: any)=>{
-                setName(value)
+            <Form name={"Name:"} setField={(value: any) => {
+              setName(value)
             }} />
-            <Form name={"Author:"} setField={(value: any)=>{
-                setAuthor(value)
+            <Form name={"Author:"} setField={(value: any) => {
+              setAuthor(value)
             }} />
-            <Form name={"Date:"} setField={(value: any)=>{
-                setDate(value)
-            }} />
-            <Form name={"Code:"} setField={(value: any)=>{
+
+            <View>
+              {showCalendar && (
+                <DateTimePicker
+                  mode="date"
+                  display='calendar'
+                  value={bookDate}
+                  onChange={onChange}
+                />
+              )}
+              <View style={styles.form}>
+                <Text style={styles.formText}>Date:</Text>
+                {!showCalendar && (
+                  <Pressable onPress={toggleCalendar}>
+                    <TextInput
+                      style={styles.input}
+                      editable={false}
+                      value={date}
+                      onChangeText={setDate}
+                    />
+                  </Pressable>)}
+              </View>
+            </View>
+
+
+              <Form name={"Code:"} setField={(value: any) => {
                 setCode(value)
-            }} />
-            <Form name={"Price:"} setField={(value: any)=>{
+              }} />
+              <Form name={"Price:"} setField={(value: any) => {
                 setPrice(value)
-            }} />
+              }} />
+            </View>
+
+            {/* Done button */}
+            <TouchableOpacity style={styles.button} onPress={handleDoneButton}>
+              <Text style={styles.buttonText}>DONE</Text>
+            </TouchableOpacity>
+
           </View>
-
-          {/* Done button */}
-          <TouchableOpacity style={styles.button} onPress={handleDoneButton}>
-            <Text style={styles.buttonText}>DONE</Text>
-          </TouchableOpacity>
-
-        </View>
       </ScrollView>
 
     </SafeAreaView>
@@ -86,7 +133,7 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
 
 const styles = StyleSheet.create({
   safeArea: {
-    display: 'flex', 
+    display: 'flex',
     flex: 1
   },
   scrollView: {
@@ -100,7 +147,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   bookmark: {
-    width: 70, 
+    width: 70,
     height: 110
   },
   titleText: {
@@ -123,9 +170,29 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   buttonText: {
-    color: "beige", 
-    fontWeight: "bold", 
+    color: "beige",
+    fontWeight: "bold",
     fontSize: 18
+  },
+  form: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 15,
+  },
+  formText: {
+    fontSize: 25,
+    alignSelf: 'center',
+    color: 'gray',
+    marginRight: 10
+  },
+  input: {
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: "gray",
+    width: 250,
+    backgroundColor: "white",
+    fontSize: 20
   }
 });
 
