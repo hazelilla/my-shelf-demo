@@ -49,14 +49,19 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
       const currentDate = selectedDate;
       setBookDate(currentDate);
 
-      if(Platform.OS === "android"){
+      if (Platform.OS === "android") {
         toggleCalendar();
-        setDate(currentDate.toDateString());
+        setDate(currentDate.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }));
       }
     } else {
       toggleCalendar();
     }
   };
+
+  const confirmIOSDate = () => {
+    setDate(bookDate.toDateString());
+    toggleCalendar();
+  }
 
   const isFormEmpty = !name || !author || !code || !date || !price;
 
@@ -87,15 +92,32 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
               setAuthor(value)
             }} />
 
+            {/* Date Picker */}
             <View>
               {showCalendar && (
                 <DateTimePicker
                   mode="date"
-                  display='calendar'
+                  display="spinner"
                   value={bookDate}
                   onChange={onChange}
+                  maximumDate={new Date()}
+                  style={styles.datePicker}
                 />
               )}
+
+              {/* IOS Calendar buttons */}
+              {showCalendar && Platform.OS === "ios" && (
+                <View style={styles.iosWrapper}>
+                  <TouchableOpacity style={styles.iosButton} onPress={toggleCalendar}>
+                    <Text style={styles.iosButtonText}>Cancel</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.iosButton} onPress={confirmIOSDate}>
+                    <Text style={styles.iosButtonText}>Confirm</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+
               <View style={styles.form}>
                 <Text style={styles.formText}>Date:</Text>
                 {!showCalendar && (
@@ -105,26 +127,27 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
                       editable={false}
                       value={date}
                       onChangeText={setDate}
+                      onPressIn={toggleCalendar}
                     />
                   </Pressable>)}
               </View>
             </View>
 
 
-              <Form name={"Code:"} setField={(value: any) => {
-                setCode(value)
-              }} />
-              <Form name={"Price:"} setField={(value: any) => {
-                setPrice(value)
-              }} />
-            </View>
-
-            {/* Done button */}
-            <TouchableOpacity style={styles.button} onPress={handleDoneButton}>
-              <Text style={styles.buttonText}>DONE</Text>
-            </TouchableOpacity>
-
+            <Form name={"Code:"} setField={(value: any) => {
+              setCode(value)
+            }} />
+            <Form name={"Price:"} setField={(value: any) => {
+              setPrice(value)
+            }} />
           </View>
+
+          {/* Done button */}
+          <TouchableOpacity style={styles.button} onPress={handleDoneButton}>
+            <Text style={styles.buttonText}>DONE</Text>
+          </TouchableOpacity>
+
+        </View>
       </ScrollView>
 
     </SafeAreaView>
@@ -187,12 +210,36 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   input: {
+    paddingLeft: 10,
     borderWidth: 1,
     borderRadius: 10,
     borderColor: "gray",
     width: 250,
     backgroundColor: "white",
-    fontSize: 20
+    fontSize: 20,
+    color: "black"
+  },
+  datePicker: {
+    height: 120,
+    marginTop: -10,
+  },
+  iosWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
+  iosButton: {
+    backgroundColor: "#11182711",
+    padding: 20,
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
+    marginBottom: 15
+  },
+  iosButtonText: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#fff"
   }
 });
 

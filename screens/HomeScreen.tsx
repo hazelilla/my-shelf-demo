@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -9,10 +9,10 @@ import {
   FlatList,
   Alert,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import BookCard from '../components/BookCard';
-import {ScreenProp} from '../types';
-import {getBooks, removeBook, emptyShelf} from '../features/BookSlice';
+import { ScreenProp } from '../types';
+import { getBooks, removeBook, emptyShelf } from '../features/BookSlice';
 import Icon from 'react-native-vector-icons/Octicons';
 import SortModal from '../modals/SortModal';
 
@@ -24,7 +24,7 @@ interface Book {
   price: number;
 }
 
-const HomeScreen = ({navigation}: ScreenProp) => {
+const HomeScreen = ({ navigation }: ScreenProp) => {
   const handleNavigation = () => {
     navigation.navigate('FormScreen');
   };
@@ -106,8 +106,10 @@ const HomeScreen = ({navigation}: ScreenProp) => {
           return a.author.localeCompare(b.author);
         case 'price':
           return +a.price - +b.price;
-        case 'code':
-          return a.code.localeCompare(b.code);
+        case 'date':
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
+          return dateA.getTime() - dateB.getTime();
         default:
           return 0;
       }
@@ -134,11 +136,11 @@ const HomeScreen = ({navigation}: ScreenProp) => {
         {
           text: 'Delete',
           onPress: () => {
-            dispatch(removeBook({code}));
+            dispatch(removeBook({ code }));
           },
         },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   };
 
@@ -158,7 +160,7 @@ const HomeScreen = ({navigation}: ScreenProp) => {
           },
         },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   };
 
@@ -217,7 +219,7 @@ const HomeScreen = ({navigation}: ScreenProp) => {
           <FlatList
             data={sortedBooks(sortingOption)}
             keyExtractor={item => item.code}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <View>
                 {/* Delete Button */}
                 <TouchableOpacity
