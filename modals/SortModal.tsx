@@ -23,7 +23,7 @@ const SortModal = ({
   optionChange,
   directionChange,
 }: SortModalProps) => {
-  const [selectedSortType, setSelectedSortType] = useState<number>(0);
+  const [selectedSortType, setSelectedSortType] = useState();
   const [sortByAscending, setSortByAscending] = useState(false);
   const [sortByDescending, setSortByDescending] = useState(false);
   const sortingOptions = [
