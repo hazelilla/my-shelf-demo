@@ -3,13 +3,12 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
   Alert,
   Pressable,
   TextInput,
   Platform
 } from 'react-native';
-import {View, Text, Colors, Image, Typography} from 'react-native-ui-lib';
+import {View, Text, Colors, Image, Typography, TouchableOpacity} from 'react-native-ui-lib';
 import { ScreenProp } from '../types';
 import Form from '../components/Form';
 import { addBook } from '../features/BookSlice';
