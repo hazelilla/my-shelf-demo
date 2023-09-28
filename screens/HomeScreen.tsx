@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
-  TouchableOpacity,
   FlatList,
   Alert,
 } from 'react-native';
-import {View, Text, Colors, Image, Typography} from 'react-native-ui-lib';
+import {View, Text, Colors, Image, Typography, TouchableOpacity} from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import BookCard from '../components/BookCard';
 import { ScreenProp } from '../types';

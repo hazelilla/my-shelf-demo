@@ -75,7 +75,7 @@ const SortModal = ({
                 animationOut={'zoomIn'}
                 isVisible={visible}
                 statusBarTranslucent={true}>
-                <View padding-10 backgroundColor="white">
+                <View padding-10 bg-white>
                     <View>
                         {/* Close Button */}
                         <TouchableOpacity
