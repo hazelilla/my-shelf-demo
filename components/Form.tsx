@@ -2,14 +2,15 @@ import React from "react";
 import { Text, View } from "react-native-ui-lib";
 import { StyleSheet, TextInput } from "react-native";
 
+
 const Form = ({name, setField} : {name: string, setField:Function}) => {
 
     const handleSetField = (value: any) => {setField(value)}
 
     return(
         <View>
-            <View style={styles.form}>
-                <Text style={styles.formText}>{name}</Text>
+            <View row spread marginB-15>
+                <Text form grey30 marginR-10 style={styles.formText}>{name}</Text>
                 <TextInput onChangeText={handleSetField} style={styles.input}/>
             </View>
         </View>
@@ -17,18 +18,8 @@ const Form = ({name, setField} : {name: string, setField:Function}) => {
 }
 
 const styles = StyleSheet.create({
-    form: {
-        display: "flex", 
-        flexDirection: "row", 
-        justifyContent: "space-between", 
-        marginBottom: 15,
-    },
     formText: {
-        fontSize: 25, 
         alignSelf:'center',
-        color: 'gray',
-        marginRight: 10,
-        fontFamily: "RobotoSlab-Light"
     },
     input: {
         paddingLeft: 10,

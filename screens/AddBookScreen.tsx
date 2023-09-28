@@ -3,20 +3,25 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  Text,
-  View,
   TouchableOpacity,
-  Image,
   Alert,
   Pressable,
   TextInput,
   Platform
 } from 'react-native';
+import {View, Text, Colors, Image, Typography} from 'react-native-ui-lib';
 import { ScreenProp } from '../types';
 import Form from '../components/Form';
 import { addBook } from '../features/BookSlice';
 import { useDispatch } from "react-redux";
 import DateTimePicker from '@react-native-community/datetimepicker';
+
+Typography.loadTypographies({
+  enter: {fontSize: 45, fontFamily: "RobotoSlab-Regular"},
+  iosbutton: { fontSize: 14, fontWeight: "500"},
+  empty: {fontSize: 20, fontFamily: "RobotoSlab-Regular"},
+  form: {fontSize: 25, fontFamily: "RobotoSlab-Light"}
+});
 
 const AddBookScreen = ({ navigation }: ScreenProp) => {
   const handleNavigation = () => { navigation.navigate('HomeScreen') };
@@ -68,23 +73,23 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.scrollView}>
-        <View style={styles.sectionContainer}>
+        <View marginL-20 flex left>
 
           {/* Header */}
-          <View style={styles.header}>
+          <View row>
 
             {/* Bookmark */}
             <TouchableOpacity onPress={handleNavigation}>
-              <Image source={require('../assets/bookmark.png')} style={styles.bookmark} />
+              <Image source={require('../assets/bookmark.png')} width={70} height={110}/>
             </TouchableOpacity>
 
             {/* Title */}
-            <Text style={styles.titleText}>Enter a book:</Text>
+            <Text khaki enter style={styles.titleText}>Enter a book:</Text>
           </View>
 
 
           {/* Form */}
-          <View style={styles.formView}>
+          <View marginT-40>
             <Form name={"Name:"} setField={(value: any) => {
               setName(value)
             }} />
@@ -107,19 +112,19 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
 
               {/* IOS Calendar buttons */}
               {showCalendar && Platform.OS === "ios" && (
-                <View style={styles.iosWrapper}>
+                <View row style={styles.iosWrapper}>
                   <TouchableOpacity style={styles.iosButton} onPress={toggleCalendar}>
-                    <Text style={styles.iosButtonText}>Cancel</Text>
+                    <Text iosbutton grey30>Cancel</Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity style={styles.iosButton} onPress={confirmIOSDate}>
-                    <Text style={styles.iosButtonText}>Confirm</Text>
+                    <Text iosbutton grey30>Confirm</Text>
                   </TouchableOpacity>
                 </View>
               )}
 
-              <View style={styles.form}>
-                <Text style={styles.formText}>Date:</Text>
+              <View row spread marginB-15>
+                <Text form grey30 style={styles.formText}>Date:</Text>
                 {!showCalendar && (
                   <Pressable onPress={toggleCalendar}>
                     <TextInput
@@ -144,7 +149,7 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
 
           {/* Done button */}
           <TouchableOpacity style={styles.button} onPress={handleDoneButton}>
-            <Text style={styles.buttonText}>DONE</Text>
+            <Text beige button>DONE</Text>
           </TouchableOpacity>
 
         </View>
@@ -162,25 +167,8 @@ const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: 'beige'
   },
-  sectionContainer: {
-    alignItems: 'flex-start',
-    marginLeft: 20
-  },
-  header: {
-    flexDirection: 'row'
-  },
-  bookmark: {
-    width: 70,
-    height: 110
-  },
   titleText: {
-    fontSize: 45,
-    color: 'darkkhaki',
-    fontFamily: "RobotoSlab-Regular",
     alignSelf: 'center',
-  },
-  formView: {
-    marginTop: 40
   },
   button: {
     backgroundColor: 'brown',
@@ -191,23 +179,8 @@ const styles = StyleSheet.create({
     borderColor: 'darkkhaki',
     marginTop: 20
   },
-  buttonText: {
-    color: "beige",
-    fontSize: 18,
-    fontFamily: "RobotoSlab-Medium"
-  },
-  form: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 15,
-  },
   formText: {
-    fontSize: 25,
     alignSelf: 'center',
-    color: 'gray',
-    marginRight: 10,
-    fontFamily: "RobotoSlab-Light"
   },
   input: {
     paddingLeft: 10,
@@ -224,7 +197,6 @@ const styles = StyleSheet.create({
     marginTop: -10,
   },
   iosWrapper: {
-    flexDirection: 'row',
     justifyContent: 'space-around'
   },
   iosButton: {
@@ -236,11 +208,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 15
   },
-  iosButtonText: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: "gray"
-  }
 });
 
 export default AddBookScreen;

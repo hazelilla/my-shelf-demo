@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import {
-    Text,
-    View,
     TouchableOpacity,
     SafeAreaView,
     StyleSheet,
     Dimensions,
 } from 'react-native';
+import { View, Text, Typography } from 'react-native-ui-lib';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+Typography.loadTypographies({
+    sort: {fontSize: 30, fontFamily: "RobotoSlab-SemiBold"},
+});
 
 interface SortModalProps {
     visible: boolean;
@@ -72,7 +75,7 @@ const SortModal = ({
                 animationOut={'zoomIn'}
                 isVisible={visible}
                 statusBarTranslucent={true}>
-                <View style={styles.container}>
+                <View padding-10 backgroundColor="white">
                     <View>
                         {/* Close Button */}
                         <TouchableOpacity
@@ -82,12 +85,12 @@ const SortModal = ({
                             <Icon name="close" color="black" size={30} />
                         </TouchableOpacity>
 
-                        <View style={styles.header}>
-                            <Text style={styles.title}>Sort by:</Text>
+                        <View>
+                            <Text center sort>Sort by:</Text>
                         </View>
 
                         {/* Checkbox for sorting by book name, author, date and price */}
-                        <View style={styles.checkBoxWrapper}>
+                        <View marginT-20 marginB-100>
                             {sortingOptions.map((item: any, index: number) => {
                                 return (
                                     <TouchableOpacity
@@ -97,7 +100,7 @@ const SortModal = ({
                                             setSelectedSortType(item.key);
                                             optionChange(item.key);
                                         }}>
-                                        <Text style={styles.checkboxLabel}>{item.name}</Text>
+                                        <Text form>{item.name}</Text>
                                         {item.key === selectedSortType
                                             ?
                                             <Icon name='checkbox-marked' color="black" size={30} />
@@ -119,7 +122,7 @@ const SortModal = ({
                                             setSelectedSortDirection(item.key);
                                             directionChange(item.key);
                                         }}>
-                                        <Text style={styles.checkboxLabel}>{item.name}</Text>
+                                        <Text form>{item.name}</Text>
                                         {item.key === selectedSortDirection
                                             ?
                                             <Icon name='checkbox-marked' color="black" size={30} />
@@ -136,7 +139,7 @@ const SortModal = ({
                             onPress={() => {
                                 hideModal();
                             }}>
-                            <Text style={styles.buttonText}>DONE</Text>
+                            <Text button center>DONE</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -146,17 +149,6 @@ const SortModal = ({
 };
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: 'white',
-        padding: 10,
-    },
-    header: {},
-    title: {
-        fontSize: 30,
-        fontFamily: "RobotoSlab-SemiBold",
-        color: 'black',
-        textAlign: 'center',
-    },
     button: {
         backgroundColor: 'beige',
         padding: 10,
@@ -168,27 +160,12 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         maxWidth: Dimensions.get('window').width * 0.3,
     },
-    buttonText: {
-        justifyContent: 'center',
-        alignSelf: 'center',
-        color: 'black',
-        fontSize: 18,
-        fontFamily: "RobotoSlab-Bold",
-    },
-    checkBoxWrapper: {
-        marginTop: 20,
-        marginBottom: 100,
-    },
     checkboxContainer: {
         marginTop: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginHorizontal: 10,
-    },
-    checkboxLabel: {
-        fontSize: 25,
-        fontFamily: "RobotoSlab-Light"
-    },
+    }
 });
 
 export default SortModal;

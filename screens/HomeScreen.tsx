@@ -2,13 +2,11 @@ import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
-  Text,
-  View,
   TouchableOpacity,
-  Image,
   FlatList,
   Alert,
 } from 'react-native';
+import {View, Text, Colors, Image, Typography} from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import BookCard from '../components/BookCard';
 import { ScreenProp } from '../types';
@@ -23,6 +21,17 @@ interface Book {
   code: any;
   price: number;
 }
+
+Colors.loadColors({
+  khaki: 'darkkhaki',
+  beige: 'beige'
+});
+
+Typography.loadTypographies({
+  title: {fontSize: 50, fontFamily: "RobotoSlab-SemiBold"},
+  button: {fontSize: 18, fontFamily: "RobotoSlab-SemiBold"},
+  empty: {fontSize: 20, fontFamily: "RobotoSlab-Regular",}
+});
 
 const HomeScreen = ({ navigation }: ScreenProp) => {
   const handleNavigation = () => {
@@ -128,17 +137,18 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <View style={styles.sectionContainer}>
+      <View flex>
+        <View flex center>
           {/* Header */}
-          <View style={styles.header}>
+          <View row>
             {/* Title */}
-            <Text style={styles.titleText}>MY SHELF</Text>
+            <Text title khaki style={styles.titleText}>MY SHELF</Text>
 
             {/* Bookmark */}
             <TouchableOpacity onPress={handleNavigation}>
               <Image
                 source={require('../assets/bookmark.png')}
+                width={70} height={110}
                 style={styles.bookmark}
               />
             </TouchableOpacity>
@@ -146,14 +156,14 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
 
           {/* Add Book Button */}
           <TouchableOpacity style={styles.button} onPress={handleNavigation}>
-            <Text style={styles.buttonText}>ADD BOOK</Text>
+            <Text button beige>ADD BOOK</Text>
           </TouchableOpacity>
 
           {/* Empty Shelf Button */}
           {books.length > 1 && (
-            <View style={styles.actions}>
+            <View row>
               <TouchableOpacity onPress={removeAllBooksFromShelf}>
-                <Text style={styles.emptyShelf}>EMPTY SHELF</Text>
+                <Text empty marginB-15 style={styles.emptyShelf}>EMPTY SHELF</Text>
               </TouchableOpacity>
 
               {/* Sort */}
@@ -188,7 +198,7 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
                 {/* Delete Button */}
                 <TouchableOpacity
                   onPress={() => removeBookFromShelf(item.code)}>
-                  <Icon name="repo-deleted" size={35} style={styles.icon} />
+                  <Icon name="repo-deleted" size={35} style={styles.bin} />
                 </TouchableOpacity>
 
                 <BookCard
@@ -213,26 +223,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'beige',
   },
-  container: {
-    flex: 1,
-  },
-  sectionContainer: {
-    alignItems: 'center',
-    flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-  },
   titleText: {
-    fontFamily: "RobotoSlab-SemiBold",
-    fontSize: 50,
-    color: 'darkkhaki',
     alignSelf: 'center',
     left: 20,
   },
   bookmark: {
-    width: 70,
-    height: 110,
     left: 50,
   },
   button: {
@@ -243,30 +238,19 @@ const styles = StyleSheet.create({
     borderColor: 'darkkhaki',
     margin: 20,
   },
-  buttonText: {
-    color: 'beige',
-    fontSize: 18,
-    fontFamily: "RobotoSlab-Medium"
-  },
-  actions: {
-    flexDirection: 'row',
-  },
   emptyShelf: {
-    fontSize: 20,
-    fontFamily: "RobotoSlab-Regular",
     borderBottomWidth: 1,
     borderRightWidth: 1,
     borderLeftWidth: 1,
     borderColor: 'gray',
     paddingHorizontal: 10,
-    marginBottom: 15,
     left: '10%',
   },
   sort: {
     color: 'black',
     left: '250%',
   },
-  icon: {
+  bin: {
     color: 'black',
     marginBottom: 5,
   },
