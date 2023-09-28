@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     },
     bookText: {
         fontSize: 21,
+        fontFamily: "RobotoSlab-Regular",
         borderBottomWidth: 1,
         color: "gray",
         borderBottomColor: "gainsboro",

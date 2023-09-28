@@ -175,9 +175,8 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 45,
-    fontWeight: '600',
     color: 'darkkhaki',
-    fontFamily: 'arial',
+    fontFamily: "RobotoSlab-Regular",
     alignSelf: 'center',
   },
   formView: {
@@ -194,8 +193,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "beige",
-    fontWeight: "bold",
-    fontSize: 18
+    fontSize: 18,
+    fontFamily: "RobotoSlab-Medium"
   },
   form: {
     display: "flex",
@@ -207,7 +206,8 @@ const styles = StyleSheet.create({
     fontSize: 25,
     alignSelf: 'center',
     color: 'gray',
-    marginRight: 10
+    marginRight: 10,
+    fontFamily: "RobotoSlab-Light"
   },
   input: {
     paddingLeft: 10,

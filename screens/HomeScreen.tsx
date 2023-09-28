@@ -224,10 +224,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   titleText: {
-    fontSize: 45,
-    fontWeight: '700',
+    fontFamily: "RobotoSlab-SemiBold",
+    fontSize: 50,
     color: 'darkkhaki',
-    fontFamily: 'arial',
     alignSelf: 'center',
     left: 20,
   },
@@ -246,14 +245,15 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'beige',
-    fontWeight: 'bold',
     fontSize: 18,
+    fontFamily: "RobotoSlab-Medium"
   },
   actions: {
     flexDirection: 'row',
   },
   emptyShelf: {
     fontSize: 20,
+    fontFamily: "RobotoSlab-Regular",
     borderBottomWidth: 1,
     borderRightWidth: 1,
     borderLeftWidth: 1,

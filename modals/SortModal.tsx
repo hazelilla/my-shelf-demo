@@ -153,6 +153,7 @@ const styles = StyleSheet.create({
     header: {},
     title: {
         fontSize: 30,
+        fontFamily: "RobotoSlab-SemiBold",
         color: 'black',
         textAlign: 'center',
     },
@@ -171,8 +172,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignSelf: 'center',
         color: 'black',
-        fontWeight: 'bold',
         fontSize: 18,
+        fontFamily: "RobotoSlab-Bold",
     },
     checkBoxWrapper: {
         marginTop: 20,
@@ -186,6 +187,7 @@ const styles = StyleSheet.create({
     },
     checkboxLabel: {
         fontSize: 25,
+        fontFamily: "RobotoSlab-Light"
     },
 });
 

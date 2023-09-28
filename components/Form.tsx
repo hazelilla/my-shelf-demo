@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
         fontSize: 25, 
         alignSelf:'center',
         color: 'gray',
-        marginRight: 10
+        marginRight: 10,
+        fontFamily: "RobotoSlab-Light"
     },
     input: {
         paddingLeft: 10,
