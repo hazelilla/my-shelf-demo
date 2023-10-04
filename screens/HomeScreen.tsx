@@ -4,14 +4,19 @@ import {
   StyleSheet,
   FlatList,
   Alert,
+  TouchableOpacity,
+  TextInput
 } from 'react-native';
-import {View, Text, Colors, Image, Typography, TouchableOpacity} from 'react-native-ui-lib';
+import { View, Text, Colors, Image, Typography } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import BookCard from '../components/BookCard';
 import { ScreenProp } from '../types';
 import { getBooks, removeBook, emptyShelf } from '../features/BookSlice';
 import Icon from 'react-native-vector-icons/Octicons';
+import SearchIcon from 'react-native-vector-icons/FontAwesome';
 import SortModal from '../modals/SortModal';
+import Search from '../components/Search';
+
 
 interface Book {
   name: string;
@@ -27,9 +32,10 @@ Colors.loadColors({
 });
 
 Typography.loadTypographies({
-  title: {fontSize: 50, fontFamily: "RobotoSlab-SemiBold"},
-  button: {fontSize: 18, fontFamily: "RobotoSlab-SemiBold"},
-  empty: {fontSize: 20, fontFamily: "RobotoSlab-Regular",}
+  title: { fontSize: 50, fontFamily: "RobotoSlab-SemiBold" },
+  button: { fontSize: 18, fontFamily: "RobotoSlab-SemiBold" },
+  empty: { fontSize: 20, fontFamily: "RobotoSlab-Regular", },
+  search: { fontSize: 20, fontFamily: "RobotoSlab-Regular" }
 });
 
 const HomeScreen = ({ navigation }: ScreenProp) => {
@@ -57,7 +63,7 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
       Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
     };
     const parsedMonthIndex = monthIndex[month as keyof typeof monthIndex] ?? 0;
-  
+
     return new Date(parseInt(year), parsedMonthIndex, parseInt(day));
   };
 
@@ -68,7 +74,7 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
   }, [books]);
 
   const sortedBooks = (key: keyof Book): Book[] => {
-    const sortedBooks = _books.slice().sort(function (a, b) {
+    const sortedBooks = itemsToDisplay.slice().sort(function (a, b) {
       switch (key) {
         case 'name':
           return a.name.localeCompare(b.name);
@@ -134,6 +140,17 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
     );
   };
 
+  const [userInput, setUserInput] = useState("");
+
+  const filteredItems = _books.filter(
+    item =>
+      item.name.toLocaleLowerCase().includes(userInput.toLocaleLowerCase()) ||
+      item.author.toLocaleLowerCase().includes(userInput.toLocaleLowerCase()) ||
+      item.code.toLocaleLowerCase().includes(userInput.toLocaleLowerCase())
+  );
+
+  const itemsToDisplay = userInput ? filteredItems : _books;
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View flex>
@@ -160,39 +177,56 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
 
           {/* Empty Shelf Button */}
           {books.length > 1 && (
-            <View row>
-              <TouchableOpacity onPress={removeAllBooksFromShelf}>
-                <Text empty marginB-15 style={styles.emptyShelf}>EMPTY SHELF</Text>
-              </TouchableOpacity>
-
-              {/* Sort */}
-              <View>
-                {modalVisible && (
-                  <SortModal
-                    visible={true}
-                    hideModal={() => setModalVisible(false)}
-                    optionChange={handleSortOptionChange}
-                    directionChange={handleSortingDirection}
-                    selectedOption={sortingOption}
-                    selectedDirection={sortingDirection}
-                  />
-                )}
-
-                <TouchableOpacity
-                  onPress={() => {
-                    setModalVisible(true);
-                  }}>
-                  <Icon name="sort-desc" size={35} style={styles.sort} />
+            <View>
+              <View row>
+                <TouchableOpacity onPress={removeAllBooksFromShelf}>
+                  <Text empty marginB-15 style={styles.emptyShelf}>EMPTY SHELF</Text>
                 </TouchableOpacity>
+
+                {/* Sort */}
+                <View>
+                  {modalVisible && (
+                    <SortModal
+                      visible={true}
+                      hideModal={() => setModalVisible(false)}
+                      optionChange={handleSortOptionChange}
+                      directionChange={handleSortingDirection}
+                      selectedOption={sortingOption}
+                      selectedDirection={sortingDirection}
+                    />
+                  )}
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      setModalVisible(true);
+                    }}>
+                    <Icon name="sort-desc" size={35} style={styles.sort} />
+                  </TouchableOpacity>
+                </View>
+
+
               </View>
+
+              {/* Search Bar */}
+              <Search onChangeText={(text) => setUserInput(text)} value={userInput} />
+
+              {/* No search result */}
+              {!filteredItems.length && (
+                <View marginT-50>
+                  <Text search>No matching books found.</Text>
+                </View>
+              )}
+
             </View>
           )}
+
 
           {/* Book Cards */}
           <FlatList
             data={sortedBooks(sortingOption)}
             keyExtractor={item => item.code}
             renderItem={({ item }) => (
+
               <View>
                 {/* Delete Button */}
                 <TouchableOpacity
@@ -227,7 +261,7 @@ const styles = StyleSheet.create({
     left: 20,
   },
   bookmark: {
-    left: 50,
+    left: 40,
   },
   button: {
     backgroundColor: 'brown',
