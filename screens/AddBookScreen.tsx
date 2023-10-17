@@ -9,7 +9,7 @@ import {
   Platform,
   TouchableOpacity
 } from 'react-native';
-import {View, Text, Colors, Image, Typography, } from 'react-native-ui-lib';
+import { View, Text, Colors, Image, Typography, } from 'react-native-ui-lib';
 import { ScreenProp } from '../types';
 import Form from '../components/Form';
 import { addBook } from '../features/BookSlice';
@@ -17,14 +17,26 @@ import { useDispatch } from "react-redux";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 Typography.loadTypographies({
-  enter: {fontSize: 45, fontFamily: "RobotoSlab-Regular"},
-  iosbutton: { fontSize: 14, fontWeight: "500"},
-  empty: {fontSize: 20, fontFamily: "RobotoSlab-Regular"},
-  form: {fontSize: 25, fontFamily: "RobotoSlab-Light"}
+  enter: { fontSize: 45, fontFamily: "RobotoSlab-Regular" },
+  iosbutton: { fontSize: 14, fontWeight: "500" },
+  empty: { fontSize: 20, fontFamily: "RobotoSlab-Regular" },
+  form: { fontSize: 25, fontFamily: "RobotoSlab-Light" }
 });
 
 const AddBookScreen = ({ navigation }: ScreenProp) => {
+
+  const [name, setName] = useState();
+  const [author, setAuthor] = useState();
+  const [date, setDate] = useState("");
+  const [code, setCode] = useState();
+  const [price, setPrice] = useState();
+  const [bookDate, setBookDate] = useState(new Date());
+  const [showCalendar, setShowCalendat] = useState(false);
+
   const handleNavigation = () => { navigation.navigate('HomeScreen') };
+
+  const isFormEmpty = !name || !author || !code || !date || !price;
+
   const handleDoneButton = () => {
     if (isFormEmpty) {
       Alert.alert('Please fill all forms!')
@@ -35,15 +47,6 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
   };
 
   const dispatch = useDispatch();
-
-  const [name, setName] = useState();
-  const [author, setAuthor] = useState();
-  const [date, setDate] = useState("");
-  const [code, setCode] = useState();
-  const [price, setPrice] = useState();
-
-  const [bookDate, setBookDate] = useState(new Date());
-  const [showCalendar, setShowCalendat] = useState(false);
 
   const toggleCalendar = () => {
     setShowCalendat(!showCalendar);
@@ -68,8 +71,6 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
     toggleCalendar();
   }
 
-  const isFormEmpty = !name || !author || !code || !date || !price;
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.scrollView}>
@@ -80,13 +81,12 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
 
             {/* Bookmark */}
             <TouchableOpacity onPress={handleNavigation}>
-              <Image source={require('../assets/bookmark.png')} width={70} height={110}/>
+              <Image source={require('../assets/bookmark.png')} width={70} height={110} />
             </TouchableOpacity>
 
             {/* Title */}
             <Text khaki enter style={styles.titleText}>Enter a book:</Text>
           </View>
-
 
           {/* Form */}
           <View marginT-40>
@@ -138,7 +138,6 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
               </View>
             </View>
 
-
             <Form name={"Code:"} setField={(value: any) => {
               setCode(value)
             }} />
@@ -154,7 +153,6 @@ const AddBookScreen = ({ navigation }: ScreenProp) => {
 
         </View>
       </ScrollView>
-
     </SafeAreaView>
   );
 }

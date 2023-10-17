@@ -4,8 +4,7 @@ import {
   StyleSheet,
   FlatList,
   Alert,
-  TouchableOpacity,
-  TextInput
+  TouchableOpacity
 } from 'react-native';
 import { View, Text, Colors, Image, Typography } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,10 +12,8 @@ import BookCard from '../components/BookCard';
 import { ScreenProp } from '../types';
 import { getBooks, removeBook, emptyShelf } from '../features/BookSlice';
 import Icon from 'react-native-vector-icons/Octicons';
-import SearchIcon from 'react-native-vector-icons/FontAwesome';
 import SortModal from '../modals/SortModal';
 import Search from '../components/Search';
-
 
 interface Book {
   name: string;
@@ -39,9 +36,11 @@ Typography.loadTypographies({
 });
 
 const HomeScreen = ({ navigation }: ScreenProp) => {
+
   const handleNavigation = () => {
     navigation.navigate('FormScreen');
   };
+
   const [_books, setBooks] = useState<Book[]>([]);
 
   const books: Book[] = useSelector(state => getBooks(state));
@@ -96,6 +95,7 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
       return sortedBooks;
     }
   };
+
   const dispatch = useDispatch();
 
   const [modalVisible, setModalVisible] = useState(false);
