@@ -1,10 +1,7 @@
 import React from "react";
-import { Text, Typography, View } from "react-native-ui-lib";
+import { Text, View } from "react-native-ui-lib";
 import { StyleSheet } from "react-native";
 
-Typography.loadTypographies({
-    book: { fontSize: 21, fontFamily: "RobotoSlab-Regular" }
-});
 
 const BookCard = ({ name, author, date, code, price }: { name: string, author: string, date: any, code: string, price: number }) => {
     return (

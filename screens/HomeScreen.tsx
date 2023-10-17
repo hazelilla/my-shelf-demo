@@ -6,7 +6,7 @@ import {
   Alert,
   TouchableOpacity
 } from 'react-native';
-import { View, Text, Colors, Image, Typography } from 'react-native-ui-lib';
+import { View, Text, Image } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import BookCard from '../components/BookCard';
 import { ScreenProp } from '../types';
@@ -22,18 +22,6 @@ interface Book {
   code: any;
   price: number;
 }
-
-Colors.loadColors({
-  khaki: 'darkkhaki',
-  beige: 'beige'
-});
-
-Typography.loadTypographies({
-  title: { fontSize: 50, fontFamily: "RobotoSlab-SemiBold" },
-  button: { fontSize: 18, fontFamily: "RobotoSlab-SemiBold" },
-  empty: { fontSize: 20, fontFamily: "RobotoSlab-Regular", },
-  search: { fontSize: 20, fontFamily: "RobotoSlab-Regular" }
-});
 
 const HomeScreen = ({ navigation }: ScreenProp) => {
 
@@ -213,7 +201,7 @@ const HomeScreen = ({ navigation }: ScreenProp) => {
               {/* No search result */}
               {!filteredItems.length && (
                 <View marginT-50>
-                  <Text search>No matching books found.</Text>
+                  <Text empty>No matching books found.</Text>
                 </View>
               )}
 

@@ -6,6 +6,8 @@ import HomeScreen from './screens/HomeScreen';
 import AddBookScreen from './screens/AddBookScreen';
 import { Provider } from "react-redux";
 import store from "./store";
+import './styles/typography';
+import './styles/colors';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 

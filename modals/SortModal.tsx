@@ -5,13 +5,9 @@ import {
     StyleSheet,
     Dimensions,
 } from 'react-native';
-import { View, Text, Typography } from 'react-native-ui-lib';
+import { View, Text } from 'react-native-ui-lib';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
-Typography.loadTypographies({
-    sort: {fontSize: 30, fontFamily: "RobotoSlab-SemiBold"},
-});
 
 interface SortModalProps {
     visible: boolean;

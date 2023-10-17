@@ -9,19 +9,13 @@ import {
   Platform,
   TouchableOpacity
 } from 'react-native';
-import { View, Text, Colors, Image, Typography, } from 'react-native-ui-lib';
+import { View, Text, Image } from 'react-native-ui-lib';
 import { ScreenProp } from '../types';
 import Form from '../components/Form';
 import { addBook } from '../features/BookSlice';
 import { useDispatch } from "react-redux";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-Typography.loadTypographies({
-  enter: { fontSize: 45, fontFamily: "RobotoSlab-Regular" },
-  iosbutton: { fontSize: 14, fontWeight: "500" },
-  empty: { fontSize: 20, fontFamily: "RobotoSlab-Regular" },
-  form: { fontSize: 25, fontFamily: "RobotoSlab-Light" }
-});
 
 const AddBookScreen = ({ navigation }: ScreenProp) => {
 
